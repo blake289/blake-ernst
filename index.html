@@ -251,7 +251,7 @@
     .nav-logo {
       display: inline-flex;
       align-items: center;
-      height: 28px;
+      height: 56px;
       text-decoration: none;
       transition: opacity 0.25s var(--ease-out);
     }
@@ -267,14 +267,16 @@
     nav ul {
       list-style: none;
       display: flex;
-      gap: 32px;
+      align-items: center;
+      gap: 40px;
     }
 
     nav ul a {
-      color: var(--muted);
+      color: var(--text-muted);
       text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
       transition: color 0.2s;
     }
 
@@ -283,8 +285,10 @@
     .nav-cta {
       background: var(--accent);
       color: #fff !important;
-      padding: 9px 18px;
-      font-size: 13px;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
       box-shadow: 0 0 20px rgba(91,110,245,0.2);
     }
 
@@ -2221,49 +2225,6 @@ nav { padding: 16px 24px; }
       .output-log { display: none; }
     }
 
-    /* ── Custom cursor ── */
-    @media (pointer: fine) {
-      * { cursor: none !important; }
-
-      .cursor-dot {
-        position: fixed;
-        width: 8px;
-        height: 8px;
-        background: var(--accent);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease, background 0.2s ease;
-        mix-blend-mode: screen;
-        opacity: 0;
-      }
-
-      .cursor-ring {
-        position: fixed;
-        width: 32px;
-        height: 32px;
-        border: 1px solid rgba(91, 110, 245, 0.4);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9998;
-        transform: translate(-50%, -50%);
-        transition: width 0.15s ease, height 0.15s ease, opacity 0.3s ease;
-        opacity: 0;
-      }
-
-      .cursor-dot.hovering {
-        width: 14px;
-        height: 14px;
-        background: #a78bfa;
-      }
-
-      .cursor-ring.hovering {
-        width: 44px;
-        height: 44px;
-        border-color: rgba(167, 139, 250, 0.5);
-      }
-    }
 
     /* ── Compare table status indicators ── */
     .status-yes::before {
@@ -2293,9 +2254,6 @@ nav { padding: 16px 24px; }
   </style>
 </head>
 <body>
-  <div class="cursor-dot" id="cursorDot"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-
   <!-- Scroll progress bar -->
   <div class="scroll-progress" id="scrollProgress"></div>
 
@@ -2305,7 +2263,7 @@ nav { padding: 16px 24px; }
   <!-- Nav -->
   <nav>
     <a href="/" class="nav-logo" aria-label="Blake Ernst — home">
-      <img src="/images/blake-logo-white.png" alt="Blake Ernst monogram" width="28" height="28" />
+      <img src="/images/blake-logo-white.png" alt="Blake Ernst monogram" width="56" height="56" />
     </a>
     <ul>
       <li><a href="#capabilities">Capabilities</a></li>
@@ -2450,9 +2408,6 @@ nav { padding: 16px 24px; }
             <div class="official-badge" title="Meta Business Partner">
               <img src="/images/meta-business-partner.png" alt="Meta Business Partner" />
             </div>
-            <div class="official-badge faa" title="FAA-Certified Drone Pilot">
-              <img src="/images/faa-certified-pilot.avif" alt="FAA Certified Pilot" />
-            </div>
           </div>
           <div class="cred-badges">
             <div class="cred-badge">Full-Stack Marketer</div>
@@ -2488,10 +2443,10 @@ nav { padding: 16px 24px; }
     <div class="mask-section" id="maskSection">
       <div class="mask-sticky">
         <div class="mask-overlay">
-          <div class="mask-text">WE ARE<br />THE TEAM.</div>
+          <div class="mask-text">THE FUTURE<br />IS NOW.</div>
         </div>
         <div class="mask-reveal" id="maskReveal">
-          <div class="mask-text-filled">WE ARE<br />THE TEAM.</div>
+          <div class="mask-text-filled">THE FUTURE<br />IS NOW.</div>
         </div>
       </div>
       <div class="mask-follow-up">
@@ -3339,45 +3294,6 @@ nav { padding: 16px 24px; }
       }, { passive: true });
     })();
 
-    // ── Custom cursor ──
-    (function() {
-      const dot = document.getElementById('cursorDot');
-      const ring = document.getElementById('cursorRing');
-      if (!dot || !ring) return;
-      // Only on fine pointer (mouse) devices
-      if (!window.matchMedia('(pointer: fine)').matches) return;
-
-      let mx = 0, my = 0, rx = 0, ry = 0;
-      let raf;
-
-      let entered = false;
-      document.addEventListener('mousemove', e => {
-        mx = e.clientX;
-        my = e.clientY;
-        dot.style.left = mx + 'px';
-        dot.style.top = my + 'px';
-        if (!entered) {
-          entered = true;
-          dot.style.opacity = '1';
-          ring.style.opacity = '1';
-          rx = mx; ry = my;
-        }
-        if (!raf) raf = requestAnimationFrame(moveRing);
-      });
-
-      function moveRing() {
-        rx += (mx - rx) * 0.12;
-        ry += (my - ry) * 0.12;
-        ring.style.left = rx + 'px';
-        ring.style.top = ry + 'px';
-        raf = requestAnimationFrame(moveRing);
-      }
-
-      document.querySelectorAll('a, button, .cap-card, .stack-feature, .compare-row, .cta-btn').forEach(el => {
-        el.addEventListener('mouseenter', () => { dot.classList.add('hovering'); ring.classList.add('hovering'); });
-        el.addEventListener('mouseleave', () => { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
-      });
-    })();
   </script>
 </body>
 </html>
