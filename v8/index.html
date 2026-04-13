@@ -479,7 +479,6 @@
     .btn-primary:hover {
       background: #4a5ce0;
       box-shadow: 0 10px 48px var(--accent-glow);
-      transform: translateY(-1px);
     }
 
     .btn-ghost {
@@ -493,6 +492,55 @@
       color: var(--text);
       border-color: var(--border-strong);
       background: var(--subtle);
+    }
+
+    /* ── CTA dropdown ── */
+    .cta-dropdown-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .cta-dropdown-trigger {
+      cursor: pointer;
+      border: none;
+    }
+    .cta-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 6px;
+      min-width: 200px;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 100;
+    }
+    .cta-dropdown-wrap.open .cta-dropdown {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+      pointer-events: auto;
+    }
+    .cta-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .cta-dropdown-item:hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+    }
+    .cta-dropdown-icon {
+      font-size: 18px;
     }
 
     /* ── Stats bar ── */
@@ -2016,7 +2064,7 @@
 
     .marquee-item:hover { opacity: 0.85; }
 
-    .marquee-item img {
+    .marquee-item img, .marquee-item svg {
       height: 22px;
       width: auto;
       display: block;
@@ -2331,7 +2379,7 @@
   <!-- Nav -->
   <nav>
     <a href="/" class="nav-logo" aria-label="Blake Ernst — home">
-      <img src="/images/blake-logo-white.png" alt="Blake Ernst monogram" width="56" height="56" />
+      <img src="../images/blake-logo-white.png" alt="Blake Ernst monogram" width="56" height="56" />
     </a>
     <ul>
       <li><a href="#capabilities">Capabilities</a></li>
@@ -2395,7 +2443,7 @@
   <!-- Marquee — tech stack logos -->
   <div class="marquee-wrap">
     <div class="marquee-track">
-      <div class="marquee-item"><img src="https://cdn.simpleicons.org/slack/white" alt="Slack"></div>
+      <div class="marquee-item"><svg role="img" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><title>Slack</title><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zm10.122 2.521a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.268 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zm-2.523 10.122a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.268a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/asana/white" alt="Asana"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/vercel/white" alt="Vercel"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/github/white" alt="GitHub"></div>
@@ -2405,7 +2453,7 @@
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/shopify/white" alt="Shopify"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/figma/white" alt="Figma"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/notion/white" alt="Notion"></div>
-      <div class="marquee-item"><img src="https://cdn.simpleicons.org/openai/white" alt="OpenAI"></div>
+      <div class="marquee-item"><svg role="img" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><title>OpenAI</title><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/zapier/white" alt="Zapier"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/make/white" alt="Make"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/airtable/white" alt="Airtable"></div>
@@ -2415,10 +2463,10 @@
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/instagram/white" alt="Instagram"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/wordpress/white" alt="WordPress"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/webflow/white" alt="Webflow"></div>
-      <div class="marquee-item"><img src="https://cdn.simpleicons.org/twilio/white" alt="Twilio"></div>
+      <div class="marquee-item"><svg role="img" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><title>Twilio</title><path d="M12 0C5.381 0 0 5.381 0 12s5.381 12 12 12 12-5.381 12-12S18.619 0 12 0zm0 20.005c-4.419 0-8.005-3.587-8.005-8.005S7.581 3.995 12 3.995s8.005 3.587 8.005 8.005-3.586 8.005-8.005 8.005zm4.192-10.837a2.345 2.345 0 1 1-2.346-2.345 2.345 2.345 0 0 1 2.346 2.345zm0 5.664a2.345 2.345 0 1 1-2.346-2.345 2.345 2.345 0 0 1 2.346 2.345zm-5.664 0a2.345 2.345 0 1 1-2.345-2.345 2.345 2.345 0 0 1 2.345 2.345zm0-5.664a2.345 2.345 0 1 1-2.345-2.345 2.345 2.345 0 0 1 2.345 2.345z"/></svg></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/mailchimp/white" alt="Mailchimp"></div>
       <!-- duplicate for seamless loop -->
-      <div class="marquee-item"><img src="https://cdn.simpleicons.org/slack/white" alt="Slack"></div>
+      <div class="marquee-item"><svg role="img" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><title>Slack</title><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zm10.122 2.521a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.268 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zm-2.523 10.122a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.268a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/asana/white" alt="Asana"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/vercel/white" alt="Vercel"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/github/white" alt="GitHub"></div>
@@ -2428,7 +2476,7 @@
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/shopify/white" alt="Shopify"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/figma/white" alt="Figma"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/notion/white" alt="Notion"></div>
-      <div class="marquee-item"><img src="https://cdn.simpleicons.org/openai/white" alt="OpenAI"></div>
+      <div class="marquee-item"><svg role="img" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><title>OpenAI</title><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/zapier/white" alt="Zapier"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/make/white" alt="Make"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/airtable/white" alt="Airtable"></div>
@@ -2438,7 +2486,7 @@
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/instagram/white" alt="Instagram"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/wordpress/white" alt="WordPress"></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/webflow/white" alt="Webflow"></div>
-      <div class="marquee-item"><img src="https://cdn.simpleicons.org/twilio/white" alt="Twilio"></div>
+      <div class="marquee-item"><svg role="img" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><title>Twilio</title><path d="M12 0C5.381 0 0 5.381 0 12s5.381 12 12 12 12-5.381 12-12S18.619 0 12 0zm0 20.005c-4.419 0-8.005-3.587-8.005-8.005S7.581 3.995 12 3.995s8.005 3.587 8.005 8.005-3.586 8.005-8.005 8.005zm4.192-10.837a2.345 2.345 0 1 1-2.346-2.345 2.345 2.345 0 0 1 2.346 2.345zm0 5.664a2.345 2.345 0 1 1-2.346-2.345 2.345 2.345 0 0 1 2.346 2.345zm-5.664 0a2.345 2.345 0 1 1-2.345-2.345 2.345 2.345 0 0 1 2.345 2.345zm0-5.664a2.345 2.345 0 1 1-2.345-2.345 2.345 2.345 0 0 1 2.345 2.345z"/></svg></div>
       <div class="marquee-item"><img src="https://cdn.simpleicons.org/mailchimp/white" alt="Mailchimp"></div>
     </div>
   </div>
@@ -2451,7 +2499,7 @@
           <div class="section-label">The Difference</div>
           <h2 class="section-title">This isn’t a new agency. It’s a new model.</h2>
           <p class="section-body">
-            Most agencies sell you a team, then give you the intern. Endless handoffs, slow timelines, people who don’t care. We’re built differently. <strong>Left and right brained.</strong> Systems thinkers. Creative professionals. And now, AI has made that combination unstoppable.
+            Most agencies sell you a team, then give you the intern. Endless handoffs, slow timelines, people who don’t care. We’re built differently — <strong>strategy, creative, and engineering under one roof.</strong> And right now, businesses that aren’t leveraging AI are falling behind the ones that are. Every month you wait is market share you don’t get back.
           </p>
           <div class="manifesto-points">
             <div class="point">
@@ -2484,7 +2532,7 @@
           </div>
           <div class="official-badges">
             <div class="official-badge" title="Meta Business Partner">
-              <img src="/images/meta-business-partner.png" alt="Meta Business Partner" />
+              <img src="../images/meta-business-partner.png" alt="Meta Business Partner" />
             </div>
           </div>
           <div class="cred-badges">
@@ -2758,7 +2806,7 @@
               <!-- State 1: One Conversation -->
               <div class="mockup-state active" data-state="1">
                 <div class="mock-label">01 · Conversation</div>
-                <div class="mock-headline">Tell me what you need.</div>
+                <div class="mock-headline">Tell us what you need.</div>
                 <div class="mock-body">One message is all it takes to start. No forms. No intake surveys.</div>
                 <div class="mock-chat">
                   <span class="you">You:</span>
@@ -2766,7 +2814,7 @@
                 </div>
               </div>
 
-              <!-- State 2: I Absorb Everything -->
+              <!-- State 2: We Absorb Everything -->
               <div class="mockup-state" data-state="2">
                 <div class="mock-label">02 · Context locked in</div>
                 <div class="mock-headline">Full picture, one team.</div>
@@ -2841,22 +2889,33 @@
     <div style="position:relative; z-index:1;">
       <div class="section-label" style="text-align:center;">Ready?</div>
       <h2>
-        Tell me<br />
+        Tell us<br />
         <span class="gradient-sheen">what you need.</span>
       </h2>
-      <p>Drop your email. We’ll reach out within 24 hours. No forms. No sales reps. No delays.</p>
+      <p>Reach out. We’ll respond within 24 hours. No forms. No sales reps. No delays.</p>
 
       <div class="hero-actions" style="justify-content:center; margin-top: 8px;">
-        <a href="mailto:blake@blakeernst.com?subject=Let%27s%20work%20together" class="btn-primary" style="font-size:17px; padding:18px 36px;">blake@blakeernst.com</a>
+        <div class="cta-dropdown-wrap">
+          <button class="btn-primary cta-dropdown-trigger" style="font-size:17px; padding:18px 36px;" onclick="this.parentElement.classList.toggle('open')">Let's build something</button>
+          <div class="cta-dropdown">
+            <a href="sms:+19512903040" class="cta-dropdown-item">
+              <span class="cta-dropdown-icon">💬</span>
+              <span>Text us</span>
+            </a>
+            <a href="mailto:blake@blakeernst.com?subject=Let%27s%20work%20together" class="cta-dropdown-item">
+              <span class="cta-dropdown-icon">✉️</span>
+              <span>Email us</span>
+            </a>
+          </div>
+        </div>
       </div>
-      <p class="cta-fallback" style="margin-top:20px;">Or <a href="#capabilities">see what’s possible</a> first.</p>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
     <div class="footer-logo">
-      <img src="/images/blake-logo-white.png" alt="Blake Ernst monogram" width="44" height="44" />
+      <img src="../images/blake-logo-white.png" alt="Blake Ernst monogram" width="44" height="44" />
     </div>
     <div>AI-amplified. Zero agencies. Zero handoffs.</div>
     <div>blake@blakeernst.com</div>
@@ -3226,26 +3285,12 @@
       });
     }
 
-    // ── Magnetic primary buttons ──
-    function magneticize(btn) {
-      const strength = 0.35;
-      const radius = 140;
-      btn.addEventListener('pointermove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = e.clientX - cx;
-        const dy = e.clientY - cy;
-        const dist = Math.hypot(dx, dy);
-        if (dist < radius) {
-          btn.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
-        }
+    // ── Close CTA dropdown on outside click ──
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('.cta-dropdown-wrap.open').forEach(wrap => {
+        if (!wrap.contains(e.target)) wrap.classList.remove('open');
       });
-      btn.addEventListener('pointerleave', () => {
-        btn.style.transform = 'translate(0,0)';
-      });
-    }
-    document.querySelectorAll('.btn-primary').forEach(magneticize);
+    });
 
     // ── 3D tilt on proof card ──
     const proofCard = document.querySelector('.proof-card');
