@@ -187,10 +187,10 @@
     .hero-silk {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
-      opacity: 0.45; mix-blend-mode: screen;
+      opacity: 0.35;
       pointer-events: none; z-index: 0;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, #000 40%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, #000 40%, transparent 100%);
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 50%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 50%, transparent 100%);
     }
     .hero-grid {
       position: relative; z-index: 2;
@@ -1228,28 +1228,29 @@
     var gl = canvas.getContext('webgl', { antialias: true, premultipliedAlpha: false });
     if (!gl) { canvas.style.display = 'none'; return; }
 
-    var vertSrc = 'attribute vec2 a_position; void main(){ gl_Position = vec4(a_position, 0.0, 1.0); }';
+    var vertSrc = 'attribute vec2 a_position; varying vec2 vUv; void main(){ vUv = a_position * 0.5 + 0.5; gl_Position = vec4(a_position, 0.0, 1.0); }';
     var fragSrc = [
       'precision highp float;',
-      'uniform float u_time;',
-      'uniform vec2  u_resolution;',
-      'uniform vec3  u_color;',
-      'uniform float u_speed;',
-      'uniform float u_scale;',
-      'uniform float u_rotation;',
-      'uniform float u_noise;',
-      'float n(vec2 p){ return sin(p.x*10.0)*sin(p.y*(3.0+sin(u_time*0.5)))+0.2; }',
-      'mat2 rot(float a){ return mat2(cos(a),-sin(a),sin(a),cos(a)); }',
-      'float pat(vec2 p){ vec2 q = p - u_time*u_speed; return (sin(p.x+q.x)+sin(p.y+q.y)+sin(0.5*(p.x+p.y)+0.5*(q.x+q.y)))*0.5; }',
+      'varying vec2 vUv;',
+      'uniform float uTime;',
+      'uniform vec3  uColor;',
+      'uniform float uSpeed;',
+      'uniform float uScale;',
+      'uniform float uRotation;',
+      'uniform float uNoiseIntensity;',
+      'const float e = 2.71828182845904523536;',
+      'float noise(vec2 texCoord){ float G = e; vec2 r = (G * sin(G * texCoord)); return fract(r.x * r.y * (1.0 + texCoord.x)); }',
+      'vec2 rotateUvs(vec2 uv, float angle){ float c = cos(angle); float s = sin(angle); mat2 rot = mat2(c, -s, s, c); return rot * uv; }',
       'void main(){',
-      '  vec2 uv = (gl_FragCoord.xy / u_resolution.xy) * 2.0 - 1.0;',
-      '  uv.x *= u_resolution.x / u_resolution.y;',
-      '  uv = rot(u_rotation) * uv;',
-      '  uv *= u_scale;',
-      '  float p = pat(uv);',
-      '  vec3 col = u_color * (0.55 + 0.45 * p);',
-      '  col += vec3(n(uv) * u_noise);',
-      '  gl_FragColor = vec4(col, 1.0);',
+      '  float rnd     = noise(gl_FragCoord.xy);',
+      '  vec2  uv      = rotateUvs(vUv * uScale, uRotation);',
+      '  vec2  tex     = uv * uScale;',
+      '  float tOffset = uSpeed * uTime;',
+      '  tex.y += 0.03 * sin(8.0 * tex.x - tOffset);',
+      '  float pattern = 0.6 + 0.4 * sin(5.0 * (tex.x + tex.y + cos(3.0 * tex.x + 5.0 * tex.y) + 0.02 * tOffset) + sin(20.0 * (tex.x + tex.y - 0.1 * tOffset)));',
+      '  vec4 col = vec4(uColor, 1.0) * vec4(pattern) - rnd / 15.0 * uNoiseIntensity;',
+      '  col.a = 1.0;',
+      '  gl_FragColor = col;',
       '}'
     ].join('\n');
 
@@ -1267,39 +1268,44 @@
     var loc = gl.getAttribLocation(prog, 'a_position');
     gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 
-    var uTime = gl.getUniformLocation(prog, 'u_time');
-    var uRes  = gl.getUniformLocation(prog, 'u_resolution');
-    var uColor = gl.getUniformLocation(prog, 'u_color');
-    var uSpeed = gl.getUniformLocation(prog, 'u_speed');
-    var uScale = gl.getUniformLocation(prog, 'u_scale');
-    var uRot   = gl.getUniformLocation(prog, 'u_rotation');
-    var uNoise = gl.getUniformLocation(prog, 'u_noise');
+    var uTime  = gl.getUniformLocation(prog, 'uTime');
+    var uColor = gl.getUniformLocation(prog, 'uColor');
+    var uSpeed = gl.getUniformLocation(prog, 'uSpeed');
+    var uScale = gl.getUniformLocation(prog, 'uScale');
+    var uRot   = gl.getUniformLocation(prog, 'uRotation');
+    var uNoise = gl.getUniformLocation(prog, 'uNoiseIntensity');
 
-    gl.uniform3f(uColor, 0.42, 0.46, 0.85);  // soft indigo to match brand
-    gl.uniform1f(uSpeed, 0.04);
-    gl.uniform1f(uScale, 4.5);
-    gl.uniform1f(uRot, 0.3);
-    gl.uniform1f(uNoise, 1.2);
+    // Defaults from React Bits Silk: color #7B7481, speed 5, scale 1, noise 1.5, rotation 0
+    gl.uniform3f(uColor, 0.482, 0.455, 0.506);
+    gl.uniform1f(uSpeed, 5.0);
+    gl.uniform1f(uScale, 1.0);
+    gl.uniform1f(uRot, 0.0);
+    gl.uniform1f(uNoise, 1.5);
 
     function resize(){
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       var w = canvas.clientWidth, h = canvas.clientHeight;
       canvas.width = Math.floor(w * dpr); canvas.height = Math.floor(h * dpr);
       gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.uniform2f(uRes, canvas.width, canvas.height);
     }
     resize(); window.addEventListener('resize', resize);
 
-    var start = performance.now(), running = true;
+    var t = 0, last = performance.now(), running = true;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function frame(){
+    function frame(now){
       if (!running) return;
-      gl.uniform1f(uTime, (performance.now() - start) / 1000);
+      var dt = (now - last) / 1000; last = now;
+      t += 0.1 * dt; // matches Silk's uTime += 0.1 * delta
+      gl.uniform1f(uTime, t);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
       if (!reduce) requestAnimationFrame(frame);
     }
-    frame();
-    document.addEventListener('visibilitychange', function(){ running = !document.hidden; if (running && !reduce) frame(); });
+    requestAnimationFrame(frame);
+    document.addEventListener('visibilitychange', function(){
+      running = !document.hidden;
+      last = performance.now();
+      if (running && !reduce) requestAnimationFrame(frame);
+    });
   })();
   </script>
 </body>
